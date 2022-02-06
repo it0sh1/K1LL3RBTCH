@@ -43,3 +43,7 @@ if you've found any bugs or if you have any idea's, let me know, would appreciat
 
 | email:    | cocotj@protonmail.com |
 | --------- | ----------------------|
+#
+`Note:`  I am <b>NOT RESPONSIBLE</b> for your actions with this webshell, Don't use<br>
+it for illegal purposes, but ofcourse it is up to you what you do with it. And people<br>
+do not really care at all, so enjoy! :)
