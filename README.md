@@ -16,7 +16,7 @@ is about creativity and to feel free to make anything you want.
 `And it is tested on:`
 - Windows 11
 - Linux Ubuntu
-- And Debian 11 (Bullseye)
+- Debian 11 (Bullseye)
 - Apache2
 
 <b>Reminder</b>: The webshell automatically adapts to the operating system.
