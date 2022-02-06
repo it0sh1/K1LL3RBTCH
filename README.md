@@ -41,7 +41,7 @@ configation file and edit the `$p4ss_k3y` variable to your own password.
 This project will continue and many more things will be added.<br>
 if you've found any bugs or if you have any idea's, let me know, would appreciate it! :)
 
-| email:    | cocotj@protonmail.com |
+| email:    | unknowwn@protonmail.ch |
 | --------- | ----------------------|
 #
 `Note:`  I am <b>NOT RESPONSIBLE</b> for your actions with this webshell, Don't use<br>
