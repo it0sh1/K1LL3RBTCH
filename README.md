@@ -27,8 +27,9 @@ Login Panel                | Admin Panel
 :-------------------------:|:-------------------------:
 <img src="https://user-images.githubusercontent.com/52290766/159453658-8138acaa-d084-4959-bc6a-eed34086395e.png" width="460" height="200" />  |  <img src="https://user-images.githubusercontent.com/52290766/159455564-0c0614a1-b11b-421e-94af-274e750b9e2d.png" width="460" height="200" />
 <hr>
-Disclaimer: Im not responsible for any illegal actions people make with this kinda stuff. I only develop and post it to github.
-What you doing with this, that is up to you, but obviously people do not listen, so enjoy hacking.
+Disclaimer: Im not responsible for any illegal actions people make with this kinda stuff. I only develop
+and post it to github. What you doing with this, that is up to you. but obviously people do not listen, 
+so enjoy hacking.
 </p>
 </pre>
 </h6>
