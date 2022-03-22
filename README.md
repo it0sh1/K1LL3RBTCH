@@ -1,49 +1,36 @@
-# K1LL3RBTCH Webshell
+<h6 align="center"> 
+<pre>
 
-Hi, Welcome to my first project on my Github page. i wrote a Webshell in PHP and i thought<br>
-it would be nice to make a Repository and upload it to my Github. I think programming/coding<br>
-is about creativity and to feel free to make anything you want.
+<p align="center"> _K1LL3RBTCH v1.0.5 by It0sh1_  </p><hr>
+<p align="left">About:<br><br>K1ll3RBTCH is a webshell written in PHP.
+V1.0.5 is the newest update for now, I'll hope you enjoy.<br><br>Functions:<br>
+- Blocks Browsers(Like google, opera, MSIE etc..)
+- Renewed Login / Admin panel system.
+- Complete whole new File Manager.
+- Displays Security Information about the vulnerable webserver.
+- New Command line interface.
+- Renewed defacing function.
+- Shows phpinfo()
+- self killing function
+- can loggout.
+</p>
+<p align="left">Tested and Compatible with:
+- Windows 10 (or higher)
+- Linux(Debian, Ubuntu etc..)<br>
+Note: On Linux it works the best, it is still not a very big problem
+in connection with windows, But it works better.</p>
+<p align="left">
+here are some screenshots:
 
-`K1LL3RBTCH has the following funtions:`
 
-- Login system (Not encrypted.)
-- Displays security information
-- Has a tiny filemanager
-- Web terminal
-- Defacing attack
-- selfkilling (self deleting)
+Login Panel                | Admin Panel
+:-------------------------:|:-------------------------:
+<img src="https://user-images.githubusercontent.com/52290766/159453658-8138acaa-d084-4959-bc6a-eed34086395e.png" width="460" height="200" />  |  <img src="https://user-images.githubusercontent.com/52290766/159455564-0c0614a1-b11b-421e-94af-274e750b9e2d.png" width="460" height="200" />
+<hr>
+Disclaimer: Im not responsible for any illegal actions people make with this kinda stuff. I only develop and post it to github.
+What you doing with this, that is up to you, but obviously people do not listen, so enjoy hacking.
+</p>
+</pre>
+</h6>
 
-`And it is tested on:`
-- Windows 11
-- Linux Ubuntu
-- Debian 11 (Bullseye)
-- Apache2
 
-<b>Reminder</b>: The webshell automatically adapts to the operating system.
-
-# How to install
-On a linux based webserver sometimes you don't have the permissions<br>
-for writing, executing and more etc. Make sure when you attack a web-<br>
-server K1LL3RBTCH needs the right permissions like 777. For testing<br>
-this webshell on your server make sure it has the following permissions:<br><br>
-
-code(example):
-```
-#: sudo chmod -R 777 /var/www/html
-```
-<br>
-
-When thats done, if you want you can set your own password to change the<br>
-configation file and edit the `$p4ss_k3y` variable to your own password.
-
-<h1>Support</h1>
-
-This project will continue and many more things will be added.<br>
-if you've found any bugs or if you have any idea's, let me know, would appreciate it! :)
-
-| email:    | unknowwn@protonmail.ch |
-| --------- | ----------------------|
-#
-`Note:`  I am <b>NOT RESPONSIBLE</b> for your actions with this webshell, Don't use<br>
-it for illegal purposes, but ofcourse it is up to you what you do with it. And people<br>
-do not really care at all, so enjoy! :)
