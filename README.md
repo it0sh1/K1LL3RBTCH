@@ -32,7 +32,7 @@ here are some screenshots:
 
 Login Panel                | Admin Panel
 :-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/52290766/159453658-8138acaa-d084-4959-bc6a-eed34086395e.png" width="460" height="200" />  |  <img src="https://user-images.githubusercontent.com/52290766/160845147-64c25725-3576-4fb4-949c-519756f1898c.png" width="460" height="200" />
+<img src="https://user-images.githubusercontent.com/52290766/161371167-dcdee6e9-ada5-4a09-9e61-67870373dea3.png" width="460" height="200" />  |  <img src="https://user-images.githubusercontent.com/52290766/160845147-64c25725-3576-4fb4-949c-519756f1898c.png" width="460" height="200" />
 <hr>
 Disclaimer: Im not responsible for any illegal actions people make with this kinda stuff. I only develop
 and post it to github. What you doing with this, that is up to you. but obviously people do not listen, 
