@@ -9,6 +9,8 @@ V1.0.5 is the newest update for now, I'll hope you enjoy.<br><br>Functions:<br>
 - Complete whole new File Manager.
 - Displays Security Information about the vulnerable webserver.
 - New Command line interface.
+- Internal Port scanner.
+- Scripter (For executing PHP scripts).
 - Renewed defacing function.
 - Shows phpinfo()
 - self killing function
