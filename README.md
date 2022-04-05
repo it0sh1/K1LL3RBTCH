@@ -15,6 +15,7 @@ V1.0.5 is the newest update for now, I'll hope you enjoy.<br><br>Functions:<br>
 - Shows phpinfo()
 - self killing function
 - can loggout.
+- rename the file to whatever you want, links will adjust automatically.
 </p><p align="left">
 Installation:<br> 
 Set the <ins>$access_key</ins> variable to your own password(that's more secure).
