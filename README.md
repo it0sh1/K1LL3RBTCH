@@ -2,7 +2,7 @@
 <pre>
 
 <p align="center">K1LL3RBTCH v1.0.5 by It0sh1</p><hr>
-<p align="left">About:<br><br>K1ll3RBTCH is a webshell written in PHP.
+<p align="left">About:<br><br>K1ll3RBTCH is a webshell written in PHP 🐘
 V1.0.5 is the newest update for now, I'll hope you enjoy.<br><br>Functions:<br>
 - Blocks Browsers(Like google, opera, MSIE etc..)
 - Renewed Login / Admin panel system.
